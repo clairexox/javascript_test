@@ -9,7 +9,7 @@
         id: 'p1',
         title: 'Dump playlist',
         artist: 'gyuurin',
-        cover: 'assets/covers/cover1.jpg',
+        cover: 'assets/covers/weirdass.jpg',
         tracks: [
           { id: 't1', title: 'Soft Hug', artist: 'gyuurin', src: 'assets/songs/soft-hug.mp3', lyrics: ['hey baby','you are my light','tiny hugs','i love you so much'] },
           { id: 't2', title: 'Moonwalk', artist: 'gyuurin', src: 'assets/songs/moonwalk.mp3', lyrics: ['walk with me','under the moon','hold my hand','never let go'] }
