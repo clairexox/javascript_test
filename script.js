@@ -97,11 +97,15 @@
     if (lyricsFullscreen) {
       document.body.classList.add('lyrics-fullscreen-active'); // optional helper class for global styles
       refs.lyricsBox.classList.add('fullscreen-lyrics');
+      // use class that fades in via CSS
       document.body.classList.add('no-scroll');
     } else {
-      refs.lyricsBox.classList.remove('fullscreen-lyrics');
-      document.body.classList.remove('no-scroll');
+      // fade out by removing the active class first, then cleanup
       document.body.classList.remove('lyrics-fullscreen-active');
+      setTimeout(() => {
+        refs.lyricsBox.classList.remove('fullscreen-lyrics');
+        document.body.classList.remove('no-scroll');
+      }, 260);
     }
     // recalc or reset scroll if needed
     if (rafId) cancelAnimationFrame(rafId);
@@ -249,6 +253,7 @@
     const el = document.createElement('div');
     el.className = 'card';
     el.innerHTML = `<img src="${pl.cover}" alt="cover"><div><h4>${pl.title}</h4><p>${pl.artist}</p></div>`;
+    // clicking the card opens the playlist modal only (no snake shortcut)
     el.addEventListener('click', () => openPlaylistModal(idx));
     return el;
   }
@@ -476,51 +481,82 @@
 
     // Start with first track loaded (no autoplay)
     setTrack(0, 0, { autoplay: false });
-    /* ---------- SEARCH ---------- */
-function searchSongs(query) {
-  query = query.toLowerCase();
-  const results = [];
-
-  DATA.playlists.forEach((pl, pi) => {
-    pl.tracks.forEach((t, ti) => {
-      const hay = (t.title + ' ' + t.artist).toLowerCase();
-      if (hay.includes(query)) {
-        results.push({ plIndex: pi, trIndex: ti, track: t, cover: pl.cover });
-      }
-    });
-  });
-
-  return results;
-}
-
-function renderSearchResults(arr) {
-  if (!refs.searchResults) return;
-  refs.searchResults.innerHTML = '';
-
-  if (!arr.length) {
-    refs.searchResults.innerHTML = `<div class="no-results">No songs found</div>`;
-    return;
   }
 
-  arr.forEach(item => {
-    const el = document.createElement('div');
-    el.className = 'search-item';
-    el.innerHTML = `
-      <img src="${item.cover}">
-      <div>
-        <strong>${item.track.title}</strong>
-        <p>${item.track.artist}</p>
-      </div>
-    `;
-    el.addEventListener('click', () => {
-      setTrack(item.plIndex, item.trIndex, { autoplay: true });
-      refs.searchResults.innerHTML = '';
-      refs.searchInput.value = '';
-    });
-    refs.searchResults.appendChild(el);
-  });
-}
+  /* ---------- SEARCH ---------- */
+  function searchSongs(query) {
+    query = (query || '').toLowerCase();
+    const results = [];
 
+    DATA.playlists.forEach((pl, pi) => {
+      pl.tracks.forEach((t, ti) => {
+        const hay = (t.title + ' ' + t.artist).toLowerCase();
+        if (hay.includes(query)) results.push({ plIndex: pi, trIndex: ti, track: t, cover: pl.cover });
+      });
+    });
+
+    return results;
+  }
+
+  function renderSearchResults(arr) {
+    if (!refs.searchResults) return;
+    refs.searchResults.innerHTML = '';
+    if (!arr || !arr.length) {
+      refs.searchResults.innerHTML = `<div class="no-results">No songs found</div>`;
+      refs.searchResults.style.display = 'block';
+      return;
+    }
+
+    arr.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'search-item';
+      el.innerHTML = `
+        <img src="${item.cover}">
+        <div>
+          <strong>${item.track.title}</strong>
+          <p>${item.track.artist}</p>
+        </div>
+      `;
+      el.addEventListener('click', () => {
+        setTrack(item.plIndex, item.trIndex, { autoplay: true });
+        refs.searchResults.innerHTML = '';
+        if (refs.searchInput) refs.searchInput.value = '';
+        refs.searchResults.style.display = 'none';
+      });
+      refs.searchResults.appendChild(el);
+    });
+    refs.searchResults.style.display = 'block';
+  }
+
+  // wire search input handlers (focus to show suggestions, input to filter)
+  if (refs.searchInput) {
+    let debounce;
+    const showTop = () => {
+      const all = [];
+      DATA.playlists.forEach((pl, pi) => pl.tracks.forEach((t, ti) => all.push({ plIndex: pi, trIndex: ti, track: t, cover: pl.cover })));
+      renderSearchResults(all.slice(0, 8));
+    };
+
+    refs.searchInput.addEventListener('focus', (e) => {
+      const q = (e.target.value || '').trim();
+      if (!q) showTop(); else renderSearchResults(searchSongs(q));
+    });
+
+    refs.searchInput.addEventListener('input', (e) => {
+      const q = (e.target.value || '').trim();
+      clearTimeout(debounce);
+      debounce = setTimeout(() => {
+        if (!q) { showTop(); return; }
+        renderSearchResults(searchSongs(q));
+      }, 140);
+    });
+
+    document.addEventListener('click', (ev) => {
+      if (!refs.searchResults) return;
+      if (ev.target === refs.searchInput || refs.searchResults.contains(ev.target)) return;
+      refs.searchResults.innerHTML = '';
+      refs.searchResults.style.display = 'none';
+    });
   }
 
   /* ---------- expose helpers for console debugging ---------- */
@@ -534,52 +570,154 @@ function renderSearchResults(arr) {
     loadLrcTextAndRender
   };
 
-  init();
-  // ===== SEARCH BAR SYSTEM ===== 
-const songs = [
-    { title: "Song 1", artist: "Artist A" },
-    { title: "Song 2", artist: "Artist B" },
-    { title: "Song 3", artist: "Artist C" },
-    // add your real songs here
-];
-
-const searchInput = document.getElementById("songSearch");
-const suggestionsBox = document.getElementById("searchSuggestions");
-
-// show suggestions
-searchInput.addEventListener("input", () => {
-    const q = searchInput.value.toLowerCase().trim();
-    suggestionsBox.innerHTML = "";
-
-    if (q.length === 0) {
-        suggestionsBox.style.display = "none";
-        return;
-    }
-
-    const filtered = songs.filter(s =>
-        s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q)
-    );
-
-    if (filtered.length === 0) {
-        suggestionsBox.style.display = "none";
-        return;
-    }
-
-    filtered.forEach(song => {
-        const div = document.createElement("div");
-        div.textContent = `${song.title} – ${song.artist}`;
-        div.addEventListener("click", () => {
-            searchInput.value = song.title;
-            suggestionsBox.style.display = "none";
-
-            // --- HOOK THIS TO YOUR PLAYER ---
-            // loadSong(song.title);
-        });
-
-        suggestionsBox.appendChild(div);
+  // --- Romantic mini-games: modal wiring with cleanup + tiny games ---
+  function openGameModal(title, contentHtml) {
+    const overlay = document.createElement('div');
+    overlay.className = 'game-overlay';
+    const box = document.createElement('div');
+    box.className = 'game-box';
+    box.innerHTML = `<h3>${title}</h3><div class="game-content">${contentHtml}</div>`;
+    const actions = document.createElement('div');
+    actions.className = 'game-actions';
+    const close = document.createElement('button');
+    close.textContent = 'Close';
+    close.addEventListener('click', () => {
+      if (overlay._cleanup) overlay._cleanup();
+      document.body.removeChild(overlay);
     });
+    actions.appendChild(close);
+    box.appendChild(actions);
+    overlay.appendChild(box);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) { if (overlay._cleanup) overlay._cleanup(); document.body.removeChild(overlay); } });
+    document.body.appendChild(overlay);
+    return overlay;
+  }
 
-    suggestionsBox.style.display = "block";
-});
+  // Snake game — playable + touch gamepad
+  function startSnakeGame(container){
+    if (!container) return null;
+    container.innerHTML = '';
+    const canvas = document.createElement('canvas');
+    canvas.width = 320; canvas.height = 320; canvas.style.width = '100%';
+    const wrap = document.createElement('div'); wrap.appendChild(canvas);
+    // gamepad
+    const pad = document.createElement('div'); pad.className = 'gamepad';
+    const btnUp = document.createElement('button'); btnUp.className='btn'; btnUp.textContent='↑';
+    const btnLeft = document.createElement('button'); btnLeft.className='btn'; btnLeft.textContent='←';
+    const btnRight = document.createElement('button'); btnRight.className='btn'; btnRight.textContent='→';
+    const btnDown = document.createElement('button'); btnDown.className='btn'; btnDown.textContent='↓';
+    pad.appendChild(btnLeft); pad.appendChild(btnUp); pad.appendChild(btnDown); pad.appendChild(btnRight);
+    container.appendChild(wrap); container.appendChild(pad);
+    const ctx = canvas.getContext('2d');
+    const grid = 16; let cols = canvas.width / grid, rows = canvas.height / grid;
+    let snake = [{x:6,y:6}], dir = {x:1,y:0}, apple = {x:10,y:10}, alive = true, speed = 120;
+    function draw(){ ctx.fillStyle='#050505'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#e44'; ctx.fillRect(apple.x*grid,apple.y*grid,grid-2,grid-2); ctx.fillStyle='#fff'; snake.forEach(s=>ctx.fillRect(s.x*grid+2,s.y*grid+2,grid-4,grid-4)); }
+    function step(){ if(!alive) return; const head = {x:(snake[snake.length-1].x+dir.x+cols)%cols, y:(snake[snake.length-1].y+dir.y+rows)%rows}; // wrap
+      // collision
+      for(let i=0;i<snake.length-1;i++){ if(snake[i].x===head.x && snake[i].y===head.y){ alive=false; return; } }
+      snake.push(head);
+      if(head.x===apple.x && head.y===apple.y){ apple = {x:Math.floor(Math.random()*cols), y:Math.floor(Math.random()*rows)}; } else { snake.shift(); }
+      draw(); setTimeout(step, speed);
+    }
+    function setDir(dx,dy){ if((dx===-dir.x && dy===-dir.y) || (dx===dir.x && dy===dir.y)) return; dir={x:dx,y:dy}; }
+    function onKey(e){ if(e.key==='ArrowLeft') setDir(-1,0); if(e.key==='ArrowRight') setDir(1,0); if(e.key==='ArrowUp') setDir(0,-1); if(e.key==='ArrowDown') setDir(0,1); }
+    // touch handlers
+    btnUp.addEventListener('touchstart',()=>setDir(0,-1)); btnDown.addEventListener('touchstart',()=>setDir(0,1)); btnLeft.addEventListener('touchstart',()=>setDir(-1,0)); btnRight.addEventListener('touchstart',()=>setDir(1,0));
+    btnUp.addEventListener('mousedown',()=>setDir(0,-1)); btnDown.addEventListener('mousedown',()=>setDir(0,1)); btnLeft.addEventListener('mousedown',()=>setDir(-1,0)); btnRight.addEventListener('mousedown',()=>setDir(1,0));
+    window.addEventListener('keydown', onKey);
+    step();
+    return ()=>{ alive=false; window.removeEventListener('keydown', onKey); btnUp.replaceWith(btnUp.cloneNode(true)); btnDown.replaceWith(btnDown.cloneNode(true)); btnLeft.replaceWith(btnLeft.cloneNode(true)); btnRight.replaceWith(btnRight.cloneNode(true)); };
+  }
 
+  // Dino runner — touch-friendly with jump button
+  function startDinoGame(container){
+    if(!container) return null;
+    container.innerHTML='';
+    const canvas = document.createElement('canvas'); canvas.width=480; canvas.height=140; canvas.style.width='100%';
+    const pad = document.createElement('div'); pad.className='gamepad'; const jumpBtn = document.createElement('button'); jumpBtn.className='btn'; jumpBtn.textContent='Jump'; pad.appendChild(jumpBtn);
+    container.appendChild(canvas); container.appendChild(pad);
+    const ctx = canvas.getContext('2d'); let x=60,y=100,vy=0,jumping=false,obs=[],running=true,score=0;
+    function spawn(){ if(!running) return; obs.push({x:canvas.width,y:110- (10+Math.random()*20),w:12}); setTimeout(spawn,900+Math.random()*700); }
+    function loop(){ if(!running) return; ctx.fillStyle='#050505'; ctx.fillRect(0,0,canvas.width,canvas.height); // ground
+      ctx.fillStyle='#fff'; ctx.fillRect(0,120,canvas.width,2);
+      if(jumping) vy+=0.9; y+=vy; if(y>100){ y=100; jumping=false; vy=0; }
+      ctx.fillStyle='#1db954'; ctx.fillRect(x,y-20,20,20);
+      for(let i=obs.length-1;i>=0;i--){ obs[i].x-=6; ctx.fillStyle='#e06'; ctx.fillRect(obs[i].x,obs[i].y,obs[i].w,12); if(obs[i].x+obs[i].w < 0) { obs.splice(i,1); score++; } // passed
+        // collision
+        if(x < obs[i].x+obs[i].w && x+20 > obs[i].x && y-20 < obs[i].y+12 && y > obs[i].y){ running=false; }
+      }
+      ctx.fillStyle='#9b9b9b'; ctx.fillText('Score: '+score, canvas.width-90, 20);
+      requestAnimationFrame(loop);
+    }
+    function doJump(){ if(!jumping){ jumping=true; vy=-12; } }
+    jumpBtn.addEventListener('touchstart', doJump); jumpBtn.addEventListener('mousedown', doJump);
+    function onKey(e){ if((e.code==='Space' || e.key===' ') ) doJump(); }
+    window.addEventListener('keydown', onKey);
+    spawn(); loop();
+    return ()=>{ running=false; window.removeEventListener('keydown', onKey); jumpBtn.replaceWith(jumpBtn.cloneNode(true)); };
+  }
+
+  // Fishing game — fishing-pac replacement, touch controls: left/right and cast
+  function startFishingGame(container){
+    if(!container) return null;
+    container.innerHTML='';
+    const canvas = document.createElement('canvas'); canvas.width=480; canvas.height=240; canvas.style.width='100%';
+    const pad = document.createElement('div'); pad.className='gamepad'; const leftBtn=document.createElement('button'); leftBtn.className='btn'; leftBtn.textContent='◀'; const rightBtn=document.createElement('button'); rightBtn.className='btn'; rightBtn.textContent='▶'; const castBtn=document.createElement('button'); castBtn.className='btn'; castBtn.textContent='Cast'; pad.appendChild(leftBtn); pad.appendChild(castBtn); pad.appendChild(rightBtn);
+    container.appendChild(canvas); container.appendChild(pad);
+    const ctx = canvas.getContext('2d'); let bx=canvas.width/2, by=20, hookY=null, hookX=0, caught=0; let fishes=[]; let running=true;
+    function spawnFish(){ if(!running) return; fishes.push({x:Math.random()*(canvas.width-40)+20,y:Math.random()*(canvas.height-80)+120,dir:Math.random()>0.5?1:-1}); setTimeout(spawnFish,800+Math.random()*1200); }
+    function loop(){ if(!running) return; ctx.fillStyle='#072'; ctx.fillRect(0,0,canvas.width,canvas.height); // sky/sea
+      // boat
+      ctx.fillStyle='#a67'; ctx.fillRect(bx-20,10,40,12);
+      // hook
+      if(hookY!==null){ ctx.strokeStyle='#fff'; ctx.beginPath(); ctx.moveTo(bx,22); ctx.lineTo(hookX,hookY); ctx.stroke(); ctx.fillStyle='#fff'; ctx.fillRect(hookX-4,hookY,8,8); hookY+=6; if(hookY>canvas.height){ hookY=null; } else { // check fish
+          for(let i=fishes.length-1;i>=0;i--){ const f=fishes[i]; if(Math.hypot(f.x-hookX,f.y-hookY)<14){ fishes.splice(i,1); caught++; hookY=null; } }
+        }
+      }
+      // draw fishes
+      ctx.fillStyle='#ffb'; fishes.forEach(f=>{ f.x += f.dir*1.6; if(f.x<10) f.x=canvas.width-10; if(f.x>canvas.width-10) f.x=10; ctx.beginPath(); ctx.arc(f.x,f.y,8,0,Math.PI*2); ctx.fill(); });
+      ctx.fillStyle='#fff'; ctx.fillText('Caught: '+caught, 10,20);
+      requestAnimationFrame(loop);
+    }
+    function moveLeft(){ bx = Math.max(30, bx-20); }
+    function moveRight(){ bx = Math.min(canvas.width-30, bx+20); }
+    function cast(){ if(hookY===null){ hookY=40; hookX=bx; } }
+    leftBtn.addEventListener('touchstart', moveLeft); leftBtn.addEventListener('mousedown', moveLeft);
+    rightBtn.addEventListener('touchstart', moveRight); rightBtn.addEventListener('mousedown', moveRight);
+    castBtn.addEventListener('touchstart', cast); castBtn.addEventListener('mousedown', cast);
+    spawnFish(); loop();
+    function onKey(e){ if(e.key==='ArrowLeft') moveLeft(); if(e.key==='ArrowRight') moveRight(); if(e.key===' ') cast(); }
+    window.addEventListener('keydown', onKey);
+    return ()=>{ running=false; window.removeEventListener('keydown', onKey); leftBtn.replaceWith(leftBtn.cloneNode(true)); rightBtn.replaceWith(rightBtn.cloneNode(true)); castBtn.replaceWith(castBtn.cloneNode(true)); };
+  }
+
+  // wire romantic action elements (non-intrusive)
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest && e.target.closest('.romantic-action');
+    if (!el) return;
+    const act = el.getAttribute('data-action');
+    if (act === 'love-note') {
+      const overlay = openGameModal('Love Note', `<p class="muted">A tiny place-holder for your romantic note. Add lyrics or a sweet message here when ready.</p><textarea id="loveNote" style="width:100%;height:120px;margin-top:8px;border-radius:8px;padding:8px;background:#0b0b0b;color:#fff;border:1px solid rgba(255,255,255,0.04)"></textarea>`);
+      const t = document.getElementById('loveNote'); if(t) t.value = 'You are my moonlight...';
+      return;
+    }
+    if (act === 'show-all'){
+      const overlay = openGameModal('Unlimited Dino', `<div id="dinoWrap"></div><p style="font-size:12px;color:var(--muted);margin-top:8px">Tap Jump or press Space. Mobile gamepad available.</p>`);
+      overlay._cleanup = startDinoGame(overlay.querySelector('#dinoWrap'));
+      return;
+    }
+    if (act === 'card-action' || act === 'home-snake'){
+      const overlay = openGameModal('Snake', `<div id="snakeWrap"></div><p style="font-size:12px;color:var(--muted);margin-top:8px">Arrow keys or on-screen arrows to play.</p>`);
+      overlay._cleanup = startSnakeGame(overlay.querySelector('#snakeWrap'));
+      return;
+    }
+    if (act === 'podcasts'){
+      const overlay = openGameModal('Fishing — Romantic', `<div id="fishWrap"></div><p style="font-size:12px;color:var(--muted);margin-top:8px">Move boat and cast to catch fish.</p>`);
+      overlay._cleanup = startFishingGame(overlay.querySelector('#fishWrap'));
+      return;
+    }
+  });
+
+  init();
+  
 })();
