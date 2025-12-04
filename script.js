@@ -105,8 +105,6 @@ No, she doesn't know what she's missin'`
     playBtn: document.getElementById('play'),
     prevBtn: document.getElementById('prev'),
     nextBtn: document.getElementById('next'),
-    loadFileBtn: document.getElementById('loadFileBtn'),
-    audioFileInput: document.getElementById('audioFileInput'),
 
     progressBar: document.getElementById('progressBar'),
     progressFill: document.getElementById('progressFill'),
@@ -256,8 +254,7 @@ No, she doesn't know what she's missin'`
     lrcLines: null
   };
 
-  // store object URL if user loads a local file so we can revoke it later
-  let currentObjectUrl = null;
+  // (local-file picker removed) 
 
   /* ---------- LYRICS: fullscreen + autosync ---------- */
   let lyricsFullscreen = false;
@@ -332,11 +329,6 @@ No, she doesn't know what she's missin'`
     if (refs.barArtist) refs.barArtist.textContent = track.artist;
 
     // audio
-    // If previously a user-loaded object URL exists, revoke it before switching
-    if (currentObjectUrl) {
-      try { URL.revokeObjectURL(currentObjectUrl); } catch (e) {}
-      currentObjectUrl = null;
-    }
     audio.src = track.src || '';
     // ensure the element loads the new source and validate it safely
     try { audio.load(); } catch (e) { /* ignore for older browsers */ }
@@ -709,28 +701,7 @@ No, she doesn't know what she's missin'`
     if (refs.prevBtn) refs.prevBtn.addEventListener('click', prev);
     if (refs.nextBtn) refs.nextBtn.addEventListener('click', next);
 
-    // Allow user to load a local audio file via file input (user gesture bypasses file:// limits)
-    if (refs.loadFileBtn && refs.audioFileInput) {
-      refs.loadFileBtn.addEventListener('click', () => refs.audioFileInput.click());
-      refs.audioFileInput.addEventListener('change', (ev) => {
-        const f = ev.target.files && ev.target.files[0];
-        if (!f) return;
-        // revoke previous object URL if any
-        if (currentObjectUrl) {
-          try { URL.revokeObjectURL(currentObjectUrl); } catch (e) {}
-          currentObjectUrl = null;
-        }
-        currentObjectUrl = URL.createObjectURL(f);
-        audio.src = currentObjectUrl;
-        try { audio.load(); } catch (e) {}
-        // update UI to show file name
-        if (refs.barTitle) refs.barTitle.textContent = f.name;
-        if (refs.barArtist) refs.barArtist.textContent = 'Local file';
-        clearAudioNotice();
-        // autoplay after user selects file
-        play();
-      });
-    }
+    // Local-file picker removed; playback uses configured `track.src` and the green play button.
 
     // Click lyrics box to toggle fullscreen
     if (refs.lyricsBox) {
