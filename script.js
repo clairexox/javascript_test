@@ -33,7 +33,7 @@
     more: [
       { cover: 'assets/covers/weirdass.jpg' },
       { cover: 'assets/covers/orgen.jpg' },
-      { cover: 'assets/covers/cover6.jpg' }
+      { cover: 'assets/covers/cat.jpg' }
     ]
   };
 
