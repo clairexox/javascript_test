@@ -1156,23 +1156,12 @@ No, she doesn't know what she's missin'`
     return overlay;
   }
 
-  // click lyrics box to open fullscreen modal with a sweet note
-  if (refs.lyricsBox) {
-    refs.lyricsBox.addEventListener('dblclick', (e) => {
-      // double-click opens full-screen modal for current track
-      const sweet = "To my love — these words are for you 💖";
-      openLyricsFullscreen(state.playlistIndex, state.trackIndex, sweet);
+  // open lyrics fullscreen cleanly (no sweet messages)
+if (refs.lyricsBox) {
+    refs.lyricsBox.addEventListener('click', () => {
+        openLyricsFullscreen(state.playlistIndex, state.trackIndex, "");
     });
-    // single click also opens modal (user asked click)
-    refs.lyricsBox.addEventListener('click', (e) => {
-      setTimeout(()=>{
-        if((e.detail || 1) === 1){
-          const sweet = "A little surprise — I love you 💐";
-          openLyricsFullscreen(state.playlistIndex, state.trackIndex, sweet);
-        }
-      }, 180);
-    });
-  }
+}
 
   init();
   
