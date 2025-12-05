@@ -12,7 +12,7 @@
         artist: 'Shootmeplease2',
         cover: 'assets/covers/pee.jpg',
         tracks: [
-            { id: 't1', title: 'Teenage Dirtbag', artist: 'Wheatus', src: 'assets/music/TEENAGE_DIRTBAG.mp3', sweetMessage: 'Noelle — you make my world a little brighter every day. 💖', lyrics: [
+            { id: 't1', title: 'Teenage Dirtbag', artist: 'Wheatus', src: 'assets/tb.mp3', sweetMessage: 'Noelle — you make my world a little brighter every day. 💖', lyrics: [
               `Her name is Noelle, I have a dream about her
 She rings my bell, I got gym class in half an hour
 Oh, how she rocks in Keds and tube socks
@@ -50,10 +50,10 @@ No, she doesn't know what she's missin'
 Oh, yeah, dirtbag
 No, she doesn't know what she's missin'`
             ] },
-            { id: 't2', title: 'S&M', artist: 'Rihanna', src: 'assets/music/TEENAGE_DIRTBAG.mp3', sweetMessage: 'When I hear this, I think of our late-night talks. 🌙', lyrics: ['walk with me','under the moon','hold my hand','never let go'] },
+            { id: 't2', title: 'S&M', artist: 'Rihanna', src: 'assets/tb.mp3', sweetMessage: 'When I hear this, I think of our late-night talks. 🌙', lyrics: ['walk with me','under the moon','hold my hand','never let go'] },
             // Demo track with safe, non-copyrighted example showing
             // paragraph and newline formatting for lyrics rendering.
-            { id: 't_demo', title: 'Demo: Paragraphs', artist: 'Example', src: 'assets/music/TEENAGE_DIRTBAG.mp3', sweetMessage: 'A tiny demo just for you — love you lots. 🌸', lyrics: [
+            { id: 't_demo', title: 'Demo: Paragraphs', artist: 'Example', src: 'assets/tb.mp3', sweetMessage: 'A tiny demo just for you — love you lots. 🌸', lyrics: [
               "This is the first paragraph.\nIt demonstrates a line break inside a paragraph.",
               "Here is the second paragraph, shown as its own block.",
               "Final short line to finish the demo."
@@ -66,7 +66,7 @@ No, she doesn't know what she's missin'`
         sweetMessage: 'Quacks and cuddles — a little playlist for us 🦆',
         artist: 'gyuurin',
         cover: 'assets/covers/buncof.jpg',
-        tracks: [ { id: 't3', title: 'Duck Pond', artist: 'gyuurin', src: 'assets/music/TEENAGE_DIRTBAG.mp3', sweetMessage: 'Ducks and warm afternoons — thinking of you. 🦆', lyrics: ['quack quack','splash','cute little ducks','i love this'] } ]
+        tracks: [ { id: 't3', title: 'Duck Pond', artist: 'gyuurin', src: 'assets/tb.mp3', sweetMessage: 'Ducks and warm afternoons — thinking of you. 🦆', lyrics: ['quack quack','splash','cute little ducks','i love this'] } ]
       },
       {
         id: 'p3',
@@ -74,7 +74,7 @@ No, she doesn't know what she's missin'`
         sweetMessage: 'Soft melodies for soft nights — love you 💫',
         artist: 'ky',
         cover: 'assets/covers/fart.jpg',
-        tracks: [ { id: 't4', title: 'Sayang', artist: 'ky', src: 'assets/music/TEENAGE_DIRTBAG.mp3', sweetMessage: 'Sayang — always and forever. ✨', lyrics: ['sayang','my heart','for you','all the time','a','b','c'] } ]
+        tracks: [ { id: 't4', title: 'Sayang', artist: 'ky', src: 'assets/tb.mp3', sweetMessage: 'Sayang — always and forever. ✨', lyrics: ['sayang','my heart','for you','all the time','a','b','c'] } ]
       }
     ],
     more: [
@@ -157,7 +157,7 @@ No, she doesn't know what she's missin'`
   function tryValidateSrc(src) {
     clearAudioNotice();
     if (!src) {
-      showAudioNotice('No audio source set for this track. Place an MP3 at `assets/music/TEENAGE_DIRTBAG.mp3` or update DATA.');
+      showAudioNotice('No audio source set for this track. Add an audio file to `assets/` and update the track `src` in DATA.');
       return;
     }
     // If running from file://, avoid fetch which commonly fails due to CORS/file access.
