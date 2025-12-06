@@ -274,40 +274,7 @@ how are you right now? good? i hope so
 
 this song never fails to remind me of you
 your kindness towards me, the sound of your laughter and also your sleepy voice
-i dont know what to say a
-
-And it's nothin' like I've ever known before
-
-Love is an open door
-Love is an open door (imma close it)
-Love is an open door with you (lord no), with you (what did i do in my past life to deserve this)
-Love is an open door
-
-I mean it's crazy
-What?
-We finish each others' --- sandwiches
-
-(Wtf is wrong with u) That's what I was gonna say! :D
-I never met someone who thinks so much like me
-Jinx! Jinx again!
-Our mental synchronization
-
-Can have but one explanation
-You and I were just meant to be (REAL)
-Say goodbye (say goodbye)
-
-
-To the pain of the past
-We don't have to feel it anymore
-Love is an open door
-Love is an open door (Door)
-Life can be so much more with you (With you), with you (With you)
-Love is an open door (Door)
-
-Can I say something crazy?
-(Can you seek professional help?) Will you marry me?
-Can I say something even crazier? (please dont)
-Yes!`] } ]
+i dont know what to say a`] } ]
       }
     ],
     more: [
