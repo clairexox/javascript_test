@@ -9,7 +9,7 @@
         id: 'p1',
         title: 'From your side, to mine',
         sweetMessage: 'For you — my favorite songs and tiny love notes. ❤',
-        artist: 'Shootmeplease2',
+        artist: 'Shootmeplease^2',
         cover: 'assets/covers/pee.jpg',
         tracks: [
             { id: 't1', title: 'Teenage Dirtbag', artist: 'Wheatus', src: 'assets/tb.mp3', lyrics: [
@@ -142,8 +142,7 @@ S-S-S and M-M-M
 S-S-S and M-M-M
 S-S-S and M-M-M`
             ] },
-            // Demo track with safe, non-copyrighted example showing
-            // paragraph and newline formatting for lyrics rendering.
+            
             { id: 't_demo', title: 'Love Me Not', artist: 'Ravyn Lenae ft. Rex Orange County', src: 'assets/LOVE.mp3', lyrics: [
               `See, right now, I need you, I'll meet you somewhere now
 You up now, I see you, I get you, take care now
@@ -207,9 +206,9 @@ Oh, no, I don't need you, but I miss you, come here`
       },
       {
         id: 'p2',
-        title: 'me, you, us and ducks',
-        sweetMessage: 'Quacks and cuddles — a little playlist for us 🦆',
-        artist: 'gyuurin',
+        title: 'One song that reminds me of you',
+        
+        artist: 'gyuurin + shootmeplease^2',
         cover: 'assets/covers/buncof.jpg',
         tracks: [ { id: 't3', title: 'Duck Pond', artist: 'gyuurin', src: 'assets/tb.mp3', sweetMessage: 'Ducks and warm afternoons — thinking of you. 🦆', lyrics: ['quack quack','splash','cute little ducks','i love this'] } ]
       },
