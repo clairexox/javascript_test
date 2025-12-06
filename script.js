@@ -50,7 +50,7 @@ No, she doesn't know what she's missin'
 Oh, yeah, dirtbag
 No, she doesn't know what she's missin'`
             ] },
-            { id: 't2', title: 'S&M', artist: 'Rihanna', src: 'assets/tb.mp3', sweetMessage: 'When I hear this, I think of our late-night talks. 🌙', lyrics: ['walk with me','under the moon','hold my hand','never let go'] },
+            { id: 't2', title: 'S&M', artist: 'Rihanna', src: 'assets/tb.mp3', lyrics: ['walk with me','under the moon','hold my hand','never let go'] },
             // Demo track with safe, non-copyrighted example showing
             // paragraph and newline formatting for lyrics rendering.
             { id: 't_demo', title: 'Demo: Paragraphs', artist: 'Example', src: 'assets/tb.mp3', sweetMessage: 'A tiny demo just for you — love you lots. 🌸', lyrics: [
@@ -988,9 +988,9 @@ No, she doesn't know what she's missin'`
 
     const lines = [
       'you are the little spark that lights my mornings (´｡• ᵕ •｡`)',
-      'petals fall when you laugh, i collect them 🌸',
-      'tiny hands, warm heart, soft night whispers ✨',
-      'my favorite place is whatever room you are in (ღ˘⌣˘ღ)'
+      'i love love love working on this project for you!',
+      'so i hope youll also enjoy exploring everything this has to offer!',
+      'i love you, keep being hydrated. drink other things, not coffee (ღ˘⌣˘ღ)'
     ];
 
     const nodes = lines.map(t => {
