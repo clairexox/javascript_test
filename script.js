@@ -206,11 +206,61 @@ Oh, no, I don't need you, but I miss you, come here`
       },
       {
         id: 'p2',
-        title: 'One song that reminds me of us?',
+        title: 'POV: Kidz bop raided ur door and gave u this song',
         
         artist: 'gyuurin + shootmeplease²',
         cover: 'assets/covers/buncof.jpg',
-        tracks: [ { id: 't3', title: 'Duck Pond', artist: 'gyuurin', src: 'assets/tb.mp3', sweetMessage: 'Ducks and warm afternoons — thinking of you. 🦆', lyrics: ['quack quack','splash','cute little ducks','i love this'] } ]
+        tracks: [ { id: 't3', title: 'Love Is an Open Door', artist: '"Frozen"/Soundtrack Version', src: 'assets/disney.mp3', lyrics: [
+              `Duet me, ur hans me anna
+              Okay, can I just say something crazy?
+
+"No you bitch"
+
+All my life has been a series of doors in my face
+And then suddenly I bump into you
+
+Seek professional help
+
+I've been searchin' my whole life to find my own place
+And maybe it's the party-talkin' or the chocolate fondue
+
+But with you (Can you shut up??? -you rn probably)
+I see your face
+
+And it's nothin' like I've ever known before
+
+Love is an open door
+Love is an open door (imma close it)
+Love is an open door with you (lord no), with you (what did i do in my past life to deserve this)
+Love is an open door
+
+I mean it's crazy
+What?
+We finish each others' --- sandwiches
+
+(Wtf is wrong with u) That's what I was gonna say! :D
+I never met someone who thinks so much like me
+Jinx! Jinx again!
+Our mental synchronization
+
+Can have but one explanation
+You and I were just meant to be (REAL)
+Say goodbye (say goodbye)
+
+
+To the pain of the past
+We don't have to feel it anymore
+Love is an open door
+Love is an open door (Door)
+Life can be so much more with you (With you), with you (With you)
+Love is an open door (Door)
+
+Can I say something crazy?
+(Can you seek professional help?) Will you marry me?
+Can I say something even crazier? (please dont)
+Yes!`
+            ] }
+          ]
       },
       {
         id: 'p3',
