@@ -13,7 +13,8 @@
         cover: 'assets/covers/pee.jpg',
         tracks: [
             { id: 't1', title: 'Teenage Dirtbag', artist: 'Wheatus', src: 'assets/tb.mp3', lyrics: [
-              `Her name is Noelle, I have a dream about her
+              `You love this song so much, so I included this here :)
+              Her name is Noelle, I have a dream about her
 She rings my bell, I got gym class in half an hour
 Oh, how she rocks in Keds and tube socks
 But she doesn't know who I am, and she doesn't give a damn about me
@@ -143,10 +144,64 @@ S-S-S and M-M-M`
             ] },
             // Demo track with safe, non-copyrighted example showing
             // paragraph and newline formatting for lyrics rendering.
-            { id: 't_demo', title: 'Sincerely, me', artist: 'Example', src: 'assets/tb.mp3', sweetMessage: 'A tiny demo just for you — love you lots. 🌸', lyrics: [
-              "This is the first paragraph.\nIt demonstrates a line break inside a paragraph.",
-              "Here is the second paragraph, shown as its own block.",
-              "Final short line to finish the demo."
+            { id: 't_demo', title: 'Love Me Not', artist: 'Ravyn Lenae ft. Rex Orange County', src: 'assets/love.mp3', llyrics: [
+              `See, right now, I need you, I'll meet you somewhere now
+You up now, I see you, I get you, take care now
+Slow down, be cool, I miss you, come here now
+It's yours now, keep it, I'll hold out until now
+I need you right now, once I leave you I'm strung out
+If I get you, I'm slowly breaking down
+
+And, oh, it's hard to see you, but I wish you were right here
+Oh, it's hard to leave you when I get you everywhere
+All this time I'm thinking, I'm strong enough to sink it
+Oh, no, I don't need you, but I miss you, come here
+
+He love me not, he loves me (pfft, more like SHE cause this is for u, lemme change the lyrics -n)
+She holds me tight, then lets me go (sorry im sentient)
+She love me not, she loves me
+She holds me tight, then lets me go
+
+Well, it's safe to say now
+You can tell I miss you the most
+I'll step away now
+It'll make it harder to know
+Whether this is right or
+Whether we should do this at all
+I don't know, either way
+All I know is that we've been movin' wrong
+
+There's a lot in our minds
+We been actin' kinda crazy
+We know how to push each other 'til we go insane
+So, we probably shouldn't do this
+We already went through this
+But I know if I'm not with you
+Then I might miss you, yeah, yeah
+
+And, oh, it's hard to see you, but I wish you were right here
+Oh, it's hard to leave you when I get you everywhere
+All this time I'm thinking we could never be a pair (we could)
+Oh, no, I don't need you, but I miss you, come here (please)
+And, oh, it's hard to see you, but I wish you were right here
+Oh, it's hard to leave you when I get you everywhere
+All this time I'm thinking, I'm strong enough to sink it
+Oh, no, I don't need you, but I miss you, come here
+
+She love me not, she loves me 
+She holds me tight, then lets me go 
+She love me not, she loves me
+She holds me tight, then lets me go
+
+You're gonna say that you're sorry at the end of the night
+Wake up in the morning, everything's alright
+At the end of the story, you're holdin' me tight
+I don't need to worry, am I out of my mind?
+
+And, oh, it's hard to see you, but I wish you were right here (I'm losing my mind)
+Oh, it's hard to leave you when I get you everywhere
+All this time I'm thinking, I'm strong enough to sink it
+Oh, no, I don't need you, but I miss you, come here`
             ] }
         ]
       },
